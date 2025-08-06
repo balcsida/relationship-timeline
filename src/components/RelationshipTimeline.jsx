@@ -533,14 +533,6 @@ const RelationshipTimeline = () => {
           )}
         </div>
       </div>
-
-      <style jsx>{`
-        @media print {
-          .no-print {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 };
