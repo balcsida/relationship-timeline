@@ -1,5 +1,4 @@
 import RelationshipTimeline from './components/RelationshipTimeline'
-import './App.css'
 
 function App() {
   return <RelationshipTimeline />

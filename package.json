@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "rspack serve --mode=development",
+    "build": "rspack build --mode=production",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "rspack serve --mode=production"
   },
   "dependencies": {
     "lucide-react": "^0.536.0",
@@ -17,16 +17,20 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@rspack/cli": "^1.4.11",
+    "@rspack/core": "^1.4.11",
+    "@rspack/plugin-react-refresh": "^1.4.3",
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+    "html-rspack-plugin": "^6.1.2",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3",
-    "vite": "^6.3.5"
+    "postcss-loader": "^8.1.1",
+    "react-refresh": "^0.17.0",
+    "tailwindcss": "^4.1.11"
   }
 }
