@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Calendar, Heart, Save, Upload, Download, Printer, Globe, Eye, Copy, Check, X, Edit2, Trash2 } from 'lucide-react';
+
+const TimelineChart = lazy(() => import('./TimelineChart'));
 
 const translations = {
   en: {
@@ -391,47 +392,19 @@ const RelationshipTimeline = () => {
                 </button>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#6b7280"
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis 
-                  domain={[-8, 8]} 
-                  stroke="#6b7280"
-                  ticks={[-8, -6, -4, -2, 0, 2, 4, 6, 8]}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
-                  }}
-                  formatter={(value, name) => {
-                    if (name === 'score') {
-                      return [value, t.satisfactionLevel];
-                    }
-                    return [value, name];
-                  }}
-                />
-                <Legend />
-                <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="5 5" />
-                <Line 
-                  type={lineType}
-                  dataKey="score" 
-                  stroke="#ec4899" 
-                  strokeWidth={3}
-                  dot={{ fill: '#ec4899', strokeWidth: 2, r: 6 }}
-                  activeDot={{ r: 8 }}
-                  name={t.satisfactionLevel}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+              </div>
+            }>
+              <TimelineChart 
+                data={chartData.map(item => ({
+                  date: item.date,
+                  satisfaction: item.score
+                }))} 
+                lineType={lineType} 
+              />
+            </Suspense>
           </div>
         )}
 

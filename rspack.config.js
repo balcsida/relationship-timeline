@@ -75,14 +75,32 @@ export default defineConfig({
   optimization: {
     splitChunks: {
       chunks: 'all',
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      minSize: 20000,
       cacheGroups: {
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'react',
+          priority: 20,
+          reuseExistingChunk: true,
+        },
+        recharts: {
+          test: /[\\/]node_modules[\\/](recharts|d3-.*|victory-vendor)[\\/]/,
+          name: 'recharts',
+          priority: 15,
+          reuseExistingChunk: true,
+        },
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           priority: 10,
+          reuseExistingChunk: true,
         },
       },
     },
+    minimize: !isDev,
+    minimizer: isDev ? [] : ['...'],
   },
   devServer: {
     port: 5173,
@@ -91,5 +109,14 @@ export default defineConfig({
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
+  },
+  performance: {
+    hints: isDev ? false : 'warning',
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+    assetFilter: function(assetFilename) {
+      // Don't warn about lazy-loaded chunks
+      return !assetFilename.includes('recharts') && assetFilename.endsWith('.js');
+    },
   },
 });
