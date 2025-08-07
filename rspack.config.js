@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isDev = process.env.NODE_ENV === 'development';
+const publicPath = process.env.PUBLIC_PATH || '/';
 
 export default defineConfig({
   entry: {
@@ -15,6 +16,7 @@ export default defineConfig({
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     clean: true,
+    publicPath: publicPath,
   },
   experiments: {
     css: true,
