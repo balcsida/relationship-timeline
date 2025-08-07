@@ -7,7 +7,12 @@
     "dev": "rspack serve --mode=development",
     "build": "rspack build --mode=production",
     "lint": "eslint .",
-    "preview": "rspack serve --mode=production"
+    "preview": "rspack serve --mode=production",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
+    "test:analyze": "node src/test/testRunner.js"
   },
   "dependencies": {
     "lucide-react": "^0.536.0",
@@ -21,16 +26,23 @@
     "@rspack/core": "^1.4.11",
     "@rspack/plugin-react-refresh": "^1.4.3",
     "@tailwindcss/postcss": "^4.1.11",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
     "html-rspack-plugin": "^6.1.2",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
     "postcss-loader": "^8.1.1",
     "react-refresh": "^0.17.0",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "vitest": "^3.2.4"
   }
 }
