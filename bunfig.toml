@@ -1,0 +1,6 @@
+[test]
+# Configure test settings
+preload = ["./src/test/setup.bun.js"]
+coverage = true
+coverageThreshold = { line = 60, function = 60, statement = 60, branch = 60 }
+coverageSkipTestFiles = true

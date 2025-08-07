@@ -2,7 +2,7 @@
 
 ## Overview
 
-This application includes a comprehensive test suite with **56 automated tests** across **19 test suites** covering all major functionality.
+This application includes a comprehensive test suite with **56 automated tests** across **19 test suites** covering all major functionality, now fully migrated to **Bun's native test runner** for optimal performance and compatibility.
 
 ## Test Coverage Areas
 
@@ -90,43 +90,40 @@ This application includes a comprehensive test suite with **56 automated tests**
 
 ## Running Tests
 
-### Test Analysis
-To see a summary of all tests without running them:
-```bash
-bun run test:analyze
-```
-
-### Running Tests with Node.js
-If you have Node.js installed:
-```bash
-NODE_ENV=test node --experimental-vm-modules node_modules/.bin/vitest run
-```
-
 ### Test Commands
 ```bash
-# Run tests once
-bun run test
+# Run all tests
+bun test
 
 # Run tests in watch mode
-bun run test:watch
-
-# Run tests with UI
-bun run test:ui
+bun test --watch
 
 # Run tests with coverage
-bun run test:coverage
+bun test --coverage
+
+# Run specific test file
+bun test src/utils/eventUtils.test.js
 
 # Analyze test structure
 bun run test:analyze
 ```
 
+### Package.json Scripts
+```bash
+# Using npm scripts
+bun run test         # Run all tests
+bun run test:watch   # Watch mode
+bun run test:coverage # With coverage report
+bun run test:analyze # Test structure analysis
+```
+
 ## Test Technologies
 
-- **Vitest**: Modern test runner with excellent Vite integration
+- **Bun Test Runner**: Native Bun testing for optimal performance
 - **React Testing Library**: For testing React components
 - **@testing-library/user-event**: For simulating user interactions
-- **@testing-library/jest-dom**: Custom matchers for DOM assertions
-- **jsdom**: Browser environment simulation
+- **Happy DOM**: Fast and lightweight DOM implementation for testing
+- **Custom DOM Matchers**: Built-in matchers for DOM assertions
 
 ## Test Structure
 
@@ -138,7 +135,8 @@ src/
 │   ├── eventUtils.js (utility functions)
 │   └── eventUtils.test.js (25 tests)
 ├── test/
-│   ├── setup.js (test configuration)
+│   ├── setup.bun.js (Bun test configuration)
+│   ├── test-utils.js (Testing utilities)
 │   └── testRunner.js (test analysis tool)
 └── App.test.jsx (2 tests)
 ```
@@ -195,13 +193,15 @@ The test suite aims for:
 - ✅ Data persistence flows
 - ✅ Internationalization
 
-## Known Limitations
+## Bun Native Testing
 
-### Bun Compatibility
-Currently, there are compatibility issues between Bun and Vitest. The tests are structured to work with Node.js. Future updates may include:
-- Migration to Bun's native test runner
-- Alternative test framework compatible with Bun
-- Docker-based test environment
+### Migration Complete
+The test suite has been fully migrated to Bun's native test runner, providing:
+- ✅ Fast test execution
+- ✅ Built-in coverage reporting
+- ✅ No dependency on Node.js
+- ✅ Seamless integration with Bun ecosystem
+- ✅ Happy DOM for fast DOM testing
 
 ### Visual Testing
 The current suite doesn't include:

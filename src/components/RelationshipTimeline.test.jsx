@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { describe, it, expect, beforeEach, mock } from 'bun:test';
+import { render, screen, fireEvent, waitFor, within, userEvent } from '../test/test-utils';
 import RelationshipTimeline from './RelationshipTimeline';
+import '../test/setup.bun';
 
 describe('RelationshipTimeline Component', () => {
   let user;
@@ -177,7 +177,7 @@ describe('RelationshipTimeline Component', () => {
     });
 
     it('should delete event when delete button is clicked and confirmed', async () => {
-      window.confirm = vi.fn(() => true);
+      window.confirm = mock(() => true);
       
       const deleteButtons = document.querySelectorAll('button svg.lucide-trash2');
       const deleteButton = deleteButtons[0].parentElement;
@@ -189,7 +189,7 @@ describe('RelationshipTimeline Component', () => {
     });
 
     it('should not delete event when deletion is cancelled', async () => {
-      window.confirm = vi.fn(() => false);
+      window.confirm = mock(() => false);
       
       const deleteButtons = document.querySelectorAll('button svg.lucide-trash2');
       const deleteButton = deleteButtons[0].parentElement;
@@ -280,7 +280,7 @@ describe('RelationshipTimeline Component', () => {
     });
 
     it('should trigger download when export button is clicked', async () => {
-      const createElementSpy = vi.spyOn(document, 'createElement');
+      const createElementSpy = mock.module('document').spyOn('createElement');
       const exportButton = screen.getByRole('button', { name: /Export Data/i });
       
       await user.click(exportButton);
@@ -294,7 +294,7 @@ describe('RelationshipTimeline Component', () => {
     });
 
     it('should import data from file', async () => {
-      window.alert = vi.fn();
+      window.alert = mock();
       
       const importData = [
         {
@@ -328,7 +328,7 @@ describe('RelationshipTimeline Component', () => {
     });
 
     it('should show error for invalid import file', async () => {
-      window.alert = vi.fn();
+      window.alert = mock();
       
       const file = new File(['invalid json'], 'test.json', {
         type: 'application/json',
@@ -372,7 +372,7 @@ describe('RelationshipTimeline Component', () => {
 
     it('should copy JSON to clipboard', async () => {
       const mockClipboard = {
-        writeText: vi.fn().mockResolvedValue(undefined),
+        writeText: mock().mockResolvedValue(undefined),
       };
       Object.assign(navigator, { clipboard: mockClipboard });
 

@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'bun:test';
+import { render, screen } from './test/test-utils';
 import App from './App';
+import './test/setup.bun';
 
 describe('App Component', () => {
   it('should render RelationshipTimeline component', () => {
