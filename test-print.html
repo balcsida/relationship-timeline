@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Print View</title>
+  <style>
+    @media print {
+      @page {
+        size: landscape;
+        margin: 0.5in;
+      }
+      
+      body * {
+        visibility: hidden;
+      }
+      
+      .print-container,
+      .print-container * {
+        visibility: visible;
+      }
+      
+      .print-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      
+      .no-print {
+        display: none !important;
+      }
+      
+      .print-header {
+        display: block !important;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #000;
+      }
+    }
+    
+    /* Screen styles */
+    @media screen {
+      .print-container {
+        display: none;
+      }
+      
+      .screen-content {
+        padding: 20px;
+      }
+    }
+    
+    /* Always visible for testing */
+    .test-mode .print-container {
+      display: block !important;
+      border: 2px solid red;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Screen Content -->
+  <div class="screen-content no-print">
+    <h1>Screen View</h1>
+    <p>This content is visible on screen but not in print.</p>
+    <button onclick="window.print()">Print</button>
+    <button onclick="toggleTestMode()">Toggle Test Mode</button>
+  </div>
+  
+  <!-- Print Content -->
+  <div class="print-container">
+    <div class="print-header">
+      <h1>Relationship Timeline - Print View</h1>
+      <p>Date: <span id="date"></span></p>
+    </div>
+    <div class="print-chart">
+      <p>Chart would appear here</p>
+      <div style="width: 100%; height: 400px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;">
+        <h2>Timeline Chart Placeholder</h2>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('date').textContent = new Date().toLocaleDateString();
+    
+    function toggleTestMode() {
+      document.body.classList.toggle('test-mode');
+    }
+  </script>
+</body>
+</html>

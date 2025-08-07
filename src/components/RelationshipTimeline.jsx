@@ -227,7 +227,7 @@ const RelationshipTimeline = () => {
   return (
     <>
       {/* Print View - Hidden on screen, visible on print */}
-      <div className="print-container hidden">
+      <div className="print-container">
         <div className="print-header">
           <h1>Relationship Timeline - Therapy Session</h1>
           <div className="print-info">
@@ -573,6 +573,21 @@ const RelationshipTimeline = () => {
             >
               <Printer size={20} />
               {t.print}
+            </button>
+            <button
+              onClick={() => {
+                const container = document.querySelector('.print-container');
+                if (container) {
+                  container.style.display = container.style.display === 'block' ? 'none' : 'block';
+                  container.style.border = '3px solid red';
+                  container.style.background = '#f9f9f9';
+                  alert('Print preview toggled. Red border = print content visible');
+                }
+              }}
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+            >
+              <Eye size={20} />
+              Debug Print
             </button>
             <button
               onClick={() => setShowJSON(!showJSON)}
