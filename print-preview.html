@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Preview Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h2>Print Preview Test for Relationship Timeline</h2>
+        <p>The print view has been optimized for therapy sessions with:</p>
+        <ul>
+            <li>✅ Landscape orientation</li>
+            <li>✅ Event labels visible on the chart</li>
+            <li>✅ Patient/Therapist information fields</li>
+            <li>✅ Event summary table</li>
+            <li>✅ Session notes section</li>
+            <li>✅ Clean, professional layout</li>
+        </ul>
+        <p><strong>To test:</strong></p>
+        <ol>
+            <li>Open the app at <a href="http://localhost:5173">http://localhost:5173</a></li>
+            <li>Add some events to the timeline</li>
+            <li>Click the "Print" button or press Ctrl+P (Cmd+P on Mac)</li>
+            <li>The print preview will show the therapy-optimized layout</li>
+        </ol>
+    </div>
+    <button class="button" onclick="window.open('http://localhost:5173', '_blank')">
+        Open Timeline App
+    </button>
+</body>
+</html>

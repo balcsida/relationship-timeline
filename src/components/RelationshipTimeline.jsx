@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Calendar, Heart, Save, Upload, Download, Printer, Globe, Eye, Copy, Check, X, Edit2, Trash2 } from 'lucide-react';
 
 const TimelineChart = lazy(() => import('./TimelineChart'));
+const PrintableTimelineChart = lazy(() => import('./PrintableTimelineChart'));
 
 const translations = {
   en: {
@@ -224,8 +225,101 @@ const RelationshipTimeline = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 p-4">
-      <div className="max-w-7xl mx-auto">
+    <>
+      {/* Print View - Hidden on screen, visible on print */}
+      <div className="print-container hidden">
+        <div className="print-header">
+          <h1>Relationship Timeline - Therapy Session</h1>
+          <div className="print-info">
+            <div className="print-info-item">
+              <strong>Patient/Client:</strong> _______________________________
+            </div>
+            <div className="print-info-item">
+              <strong>Session Date:</strong> {new Date().toLocaleDateString()}
+            </div>
+            <div className="print-info-item">
+              <strong>Therapist:</strong> _______________________________
+            </div>
+          </div>
+          <div className="print-info">
+            <div className="print-info-item">
+              <strong>Period Covered:</strong> {events.length > 0 ? `${events[0].displayDate} to ${events[events.length - 1].displayDate}` : 'N/A'}
+            </div>
+            <div className="print-info-item">
+              <strong>Total Events:</strong> {events.length}
+            </div>
+          </div>
+        </div>
+
+        {events.length > 0 && (
+          <div className="print-chart">
+            <Suspense fallback={<div>Loading chart...</div>}>
+              <PrintableTimelineChart 
+                data={chartData.map(item => ({
+                  date: item.date,
+                  satisfaction: item.score,
+                  description: item.description
+                }))} 
+                lineType="monotone"
+                showLabels={true}
+                language={language}
+              />
+            </Suspense>
+          </div>
+        )}
+
+        <div className="print-summary">
+          <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Event Summary</h2>
+          <table className="print-events-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Event Description</th>
+                <th>Satisfaction Score</th>
+                <th>Emotional State</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event, index) => (
+                <tr key={index}>
+                  <td>{event.displayDate}</td>
+                  <td>{event.description}</td>
+                  <td>
+                    <span className="satisfaction-badge" style={{
+                      backgroundColor: getScoreColor(event.score) + '20',
+                      color: getScoreColor(event.score)
+                    }}>
+                      {event.score > 0 ? '+' : ''}{event.score}
+                    </span>
+                  </td>
+                  <td>
+                    {event.score >= 6 ? 'Very Happy' :
+                     event.score >= 3 ? 'Happy' :
+                     event.score > 0 ? 'Slightly Happy' :
+                     event.score === 0 ? 'Neutral' :
+                     event.score > -3 ? 'Slightly Unhappy' :
+                     event.score > -6 ? 'Unhappy' :
+                     'Very Unhappy'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="print-notes">
+          <h3>Session Notes</h3>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+        </div>
+      </div>
+
+      {/* Regular Screen View */}
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 p-4 no-print">
+        <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -505,8 +599,9 @@ const RelationshipTimeline = () => {
             </div>
           )}
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
