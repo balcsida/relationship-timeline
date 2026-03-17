@@ -40,11 +40,11 @@ export const validateImportedData = (data) => {
     return false;
   }
   
-  return data.every(event => 
-    event.hasOwnProperty('id') &&
-    event.hasOwnProperty('description') &&
-    event.hasOwnProperty('score') &&
-    event.hasOwnProperty('date') &&
+  return data.every(event =>
+    Object.prototype.hasOwnProperty.call(event, 'id') &&
+    Object.prototype.hasOwnProperty.call(event, 'description') &&
+    Object.prototype.hasOwnProperty.call(event, 'score') &&
+    Object.prototype.hasOwnProperty.call(event, 'date') &&
     typeof event.score === 'number' &&
     event.score >= -8 &&
     event.score <= 8

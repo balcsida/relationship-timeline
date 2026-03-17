@@ -25,7 +25,7 @@ export async function waitForElement(fn, options = {}) {
     try {
       const result = fn();
       if (result) return result;
-    } catch (e) {}
+    } catch { /* retry */ }
     await new Promise(resolve => setTimeout(resolve, 50));
   }
   

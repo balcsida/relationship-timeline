@@ -192,7 +192,7 @@ const RelationshipTimeline = () => {
           const importedEvents = JSON.parse(e.target.result);
           setEvents(importedEvents.sort((a, b) => new Date(a.date) - new Date(b.date)));
           alert(t.importSuccess);
-        } catch (error) {
+        } catch {
           alert(t.importError);
         }
       };
@@ -338,10 +338,11 @@ const RelationshipTimeline = () => {
           <form onSubmit={handleSubmit} className="space-y-4 mb-6">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-description" className="block text-sm font-medium text-gray-700 mb-2">
                   {t.eventDescription}
                 </label>
                 <input
+                  id="event-description"
                   type="text"
                   value={currentEvent.description}
                   onChange={(e) => setCurrentEvent({...currentEvent, description: e.target.value})}
@@ -351,10 +352,11 @@ const RelationshipTimeline = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-score" className="block text-sm font-medium text-gray-700 mb-2">
                   {t.satisfactionScore} ({currentEvent.score})
                 </label>
                 <input
+                  id="event-score"
                   type="range"
                   min="-8"
                   max="8"
@@ -375,11 +377,12 @@ const RelationshipTimeline = () => {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-date" className="block text-sm font-medium text-gray-700 mb-2">
                   <Calendar className="inline mr-2" size={16} />
                   {t.date}
                 </label>
                 <input
+                  id="event-date"
                   type={currentEvent.monthOnly ? "month" : "date"}
                   value={currentEvent.monthOnly ? currentEvent.date.substring(0, 7) : currentEvent.date}
                   onChange={(e) => {

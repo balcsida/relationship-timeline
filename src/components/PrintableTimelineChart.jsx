@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, LabelList, Cell } from 'recharts';
 
-const PrintableTimelineChart = ({ data, lineType, showLabels = false, language = 'en' }) => {
+const PrintableTimelineChart = ({ data, lineType, showLabels = false }) => {
   const renderCustomLabel = (props) => {
     const { x, y, index } = props;
     const event = data[index];
