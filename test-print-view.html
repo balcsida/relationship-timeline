@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Print View - Relationship Timeline</title>
+  <style>
+    /* Copy of the print.css styles for testing */
+    
+    /* Hide print container on screen */
+    @media screen {
+      .print-container {
+        display: none !important;
+      }
+      
+      /* Test mode to view print layout on screen */
+      body.test-print-mode .print-container {
+        display: block !important;
+        border: 2px solid red;
+        padding: 20px;
+        background: #f9f9f9;
+      }
+      
+      body.test-print-mode .screen-content {
+        opacity: 0.3;
+      }
+    }
+
+    @media print {
+      @page {
+        size: landscape;
+        margin: 0.5in;
+      }
+
+      /* Hide everything except print content */
+      body * {
+        visibility: hidden;
+      }
+
+      .print-container,
+      .print-container * {
+        visibility: visible;
+      }
+
+      .print-container {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-header {
+        display: block !important;
+        visibility: visible !important;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #000;
+      }
+
+      .print-chart {
+        display: block !important;
+        visibility: visible !important;
+        width: 100%;
+        height: 600px;
+        page-break-inside: avoid;
+      }
+    }
+    
+    /* Basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .screen-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    
+    button:hover {
+      background: #3182ce;
+    }
+    
+    .status {
+      margin: 20px 0;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
+    
+    .chart-placeholder {
+      width: 100%;
+      height: 400px;
+      border: 2px dashed #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Screen Content -->
+  <div class="screen-content no-print">
+    <h1>Print View Tester - Relationship Timeline</h1>
+    <p>This page tests the print functionality of the Relationship Timeline app.</p>
+    
+    <div class="status">
+      <h3>Test Instructions:</h3>
+      <ol>
+        <li>Click "Test Print Mode" to see what will be printed (red border)</li>
+        <li>Click "Print Preview" to open the browser's print dialog</li>
+        <li>Check if the print preview shows the timeline content</li>
+      </ol>
+    </div>
+    
+    <button onclick="toggleTestMode()">Toggle Test Print Mode</button>
+    <button onclick="window.print()">Print Preview</button>
+    <button onclick="checkPrintStyles()">Check Print Styles</button>
+    
+    <div id="style-check" class="status" style="display: none;">
+      <h3>Style Check Results:</h3>
+      <pre id="style-results"></pre>
+    </div>
+  </div>
+  
+  <!-- Print Content (mimics the React component structure) -->
+  <div class="print-container">
+    <div class="print-header">
+      <h1>Relationship Timeline - Therapy Session</h1>
+      <div class="print-info">
+        <div class="print-info-item">
+          <strong>Patient/Client:</strong> _______________________________
+        </div>
+        <div class="print-info-item">
+          <strong>Session Date:</strong> <span id="session-date"></span>
+        </div>
+        <div class="print-info-item">
+          <strong>Therapist:</strong> _______________________________
+        </div>
+      </div>
+    </div>
+    
+    <div class="print-chart">
+      <div class="chart-placeholder">
+        <div>
+          <h2>Timeline Chart Would Appear Here</h2>
+          <p>If you see this in print preview, the print view is working!</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="print-summary">
+      <h2>Event Summary</h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ccc; padding: 8px;">Date</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Event</th>
+            <th style="border: 1px solid #ccc; padding: 8px;">Satisfaction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #ccc; padding: 8px;">2024-01</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">Sample Event 1</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">+5</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ccc; padding: 8px;">2024-02</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">Sample Event 2</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">-3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <script>
+    // Set the current date
+    document.getElementById('session-date').textContent = new Date().toLocaleDateString();
+    
+    function toggleTestMode() {
+      document.body.classList.toggle('test-print-mode');
+      const isTestMode = document.body.classList.contains('test-print-mode');
+      alert(isTestMode ? 'Test mode ON - You should see the print content with a red border' : 'Test mode OFF');
+    }
+    
+    function checkPrintStyles() {
+      const printContainer = document.querySelector('.print-container');
+      const styles = window.getComputedStyle(printContainer);
+      
+      const results = `
+Print Container Styles:
+- Display: ${styles.display}
+- Visibility: ${styles.visibility}
+- Position: ${styles.position}
+- Width: ${styles.width}
+
+Print Media Query Test:
+- Screen display should be: none
+- Print display should be: block (check in print preview)
+      `;
+      
+      document.getElementById('style-check').style.display = 'block';
+      document.getElementById('style-results').textContent = results;
+    }
+  </script>
+</body>
+</html>

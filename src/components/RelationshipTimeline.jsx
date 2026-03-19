@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Calendar, Heart, Save, Upload, Download, Printer, Globe, Eye, Copy, Check, X, Edit2, Trash2 } from 'lucide-react';
+
+const TimelineChart = lazy(() => import('./TimelineChart'));
+const PrintableTimelineChart = lazy(() => import('./PrintableTimelineChart'));
 
 const translations = {
   en: {
@@ -190,7 +192,7 @@ const RelationshipTimeline = () => {
           const importedEvents = JSON.parse(e.target.result);
           setEvents(importedEvents.sort((a, b) => new Date(a.date) - new Date(b.date)));
           alert(t.importSuccess);
-        } catch (error) {
+        } catch {
           alert(t.importError);
         }
       };
@@ -223,8 +225,101 @@ const RelationshipTimeline = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 p-4">
-      <div className="max-w-7xl mx-auto">
+    <>
+      {/* Print View - Hidden on screen, visible on print */}
+      <div className="print-container">
+        <div className="print-header">
+          <h1>Relationship Timeline - Therapy Session</h1>
+          <div className="print-info">
+            <div className="print-info-item">
+              <strong>Patient/Client:</strong> _______________________________
+            </div>
+            <div className="print-info-item">
+              <strong>Session Date:</strong> {new Date().toLocaleDateString()}
+            </div>
+            <div className="print-info-item">
+              <strong>Therapist:</strong> _______________________________
+            </div>
+          </div>
+          <div className="print-info">
+            <div className="print-info-item">
+              <strong>Period Covered:</strong> {events.length > 0 ? `${events[0].displayDate} to ${events[events.length - 1].displayDate}` : 'N/A'}
+            </div>
+            <div className="print-info-item">
+              <strong>Total Events:</strong> {events.length}
+            </div>
+          </div>
+        </div>
+
+        {events.length > 0 && (
+          <div className="print-chart">
+            <Suspense fallback={<div>Loading chart...</div>}>
+              <PrintableTimelineChart 
+                data={chartData.map(item => ({
+                  date: item.date,
+                  satisfaction: item.score,
+                  description: item.description
+                }))} 
+                lineType="monotone"
+                showLabels={true}
+                language={language}
+              />
+            </Suspense>
+          </div>
+        )}
+
+        <div className="print-summary">
+          <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Event Summary</h2>
+          <table className="print-events-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Event Description</th>
+                <th>Satisfaction Score</th>
+                <th>Emotional State</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((event, index) => (
+                <tr key={index}>
+                  <td>{event.displayDate}</td>
+                  <td>{event.description}</td>
+                  <td>
+                    <span className="satisfaction-badge" style={{
+                      backgroundColor: getScoreColor(event.score) + '20',
+                      color: getScoreColor(event.score)
+                    }}>
+                      {event.score > 0 ? '+' : ''}{event.score}
+                    </span>
+                  </td>
+                  <td>
+                    {event.score >= 6 ? 'Very Happy' :
+                     event.score >= 3 ? 'Happy' :
+                     event.score > 0 ? 'Slightly Happy' :
+                     event.score === 0 ? 'Neutral' :
+                     event.score > -3 ? 'Slightly Unhappy' :
+                     event.score > -6 ? 'Unhappy' :
+                     'Very Unhappy'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="print-notes">
+          <h3>Session Notes</h3>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+          <div className="print-notes-lines"></div>
+        </div>
+      </div>
+
+      {/* Regular Screen View */}
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 p-4 no-print">
+        <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -243,10 +338,11 @@ const RelationshipTimeline = () => {
           <form onSubmit={handleSubmit} className="space-y-4 mb-6">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-description" className="block text-sm font-medium text-gray-700 mb-2">
                   {t.eventDescription}
                 </label>
                 <input
+                  id="event-description"
                   type="text"
                   value={currentEvent.description}
                   onChange={(e) => setCurrentEvent({...currentEvent, description: e.target.value})}
@@ -256,10 +352,11 @@ const RelationshipTimeline = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-score" className="block text-sm font-medium text-gray-700 mb-2">
                   {t.satisfactionScore} ({currentEvent.score})
                 </label>
                 <input
+                  id="event-score"
                   type="range"
                   min="-8"
                   max="8"
@@ -280,11 +377,12 @@ const RelationshipTimeline = () => {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="event-date" className="block text-sm font-medium text-gray-700 mb-2">
                   <Calendar className="inline mr-2" size={16} />
                   {t.date}
                 </label>
                 <input
+                  id="event-date"
                   type={currentEvent.monthOnly ? "month" : "date"}
                   value={currentEvent.monthOnly ? currentEvent.date.substring(0, 7) : currentEvent.date}
                   onChange={(e) => {
@@ -391,47 +489,19 @@ const RelationshipTimeline = () => {
                 </button>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#6b7280"
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis 
-                  domain={[-8, 8]} 
-                  stroke="#6b7280"
-                  ticks={[-8, -6, -4, -2, 0, 2, 4, 6, 8]}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
-                  }}
-                  formatter={(value, name) => {
-                    if (name === 'score') {
-                      return [value, t.satisfactionLevel];
-                    }
-                    return [value, name];
-                  }}
-                />
-                <Legend />
-                <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="5 5" />
-                <Line 
-                  type={lineType}
-                  dataKey="score" 
-                  stroke="#ec4899" 
-                  strokeWidth={3}
-                  dot={{ fill: '#ec4899', strokeWidth: 2, r: 6 }}
-                  activeDot={{ r: 8 }}
-                  name={t.satisfactionLevel}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+              </div>
+            }>
+              <TimelineChart 
+                data={chartData.map(item => ({
+                  date: item.date,
+                  satisfaction: item.score
+                }))} 
+                lineType={lineType} 
+              />
+            </Suspense>
           </div>
         )}
 
@@ -508,6 +578,21 @@ const RelationshipTimeline = () => {
               {t.print}
             </button>
             <button
+              onClick={() => {
+                const container = document.querySelector('.print-container');
+                if (container) {
+                  container.style.display = container.style.display === 'block' ? 'none' : 'block';
+                  container.style.border = '3px solid red';
+                  container.style.background = '#f9f9f9';
+                  alert('Print preview toggled. Red border = print content visible');
+                }
+              }}
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+            >
+              <Eye size={20} />
+              Debug Print
+            </button>
+            <button
               onClick={() => setShowJSON(!showJSON)}
               className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2"
             >
@@ -532,8 +617,9 @@ const RelationshipTimeline = () => {
             </div>
           )}
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

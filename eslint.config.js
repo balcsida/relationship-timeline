@@ -16,6 +16,18 @@ export default [
         sourceType: 'module',
       },
     },
+  },
+  {
+    files: ['vite.config.js', 'src/test/**/*.{js,jsx}', 'src/**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        global: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['**/*.{js,jsx}'],
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,

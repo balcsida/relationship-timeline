@@ -1,0 +1,172 @@
+/* Hide print container on screen */
+@media screen {
+  .print-container {
+    display: none !important;
+  }
+}
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.5in;
+  }
+
+  /* Hide everything except print content */
+  body * {
+    visibility: hidden;
+  }
+
+  .print-container,
+  .print-container * {
+    visibility: visible;
+  }
+
+  .print-container {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* Hide UI elements during print */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Print header styling */
+  .print-header {
+    display: block !important;
+    visibility: visible !important;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #000;
+  }
+
+  .print-header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #000;
+  }
+
+  .print-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .print-info-item {
+    font-size: 12px;
+    color: #000;
+  }
+
+  /* Chart container for print */
+  .print-chart {
+    display: block !important;
+    visibility: visible !important;
+    width: 100%;
+    height: 600px;
+    page-break-inside: avoid;
+  }
+
+  /* Event labels styling */
+  .event-label {
+    font-size: 10px;
+    background: white;
+    padding: 2px 4px;
+    border: 1px solid #333;
+    border-radius: 3px;
+    max-width: 120px;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .event-label-positive {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+  }
+
+  .event-label-negative {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+
+  .event-label-neutral {
+    border-color: #6b7280;
+    background-color: #f9fafb;
+  }
+
+  /* Summary section */
+  .print-summary {
+    margin-top: 30px;
+    page-break-before: always;
+  }
+
+  .print-events-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .print-events-table th,
+  .print-events-table td {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    text-align: left;
+  }
+
+  .print-events-table th {
+    background-color: #f3f4f6;
+    font-weight: bold;
+  }
+
+  .satisfaction-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 10px;
+  }
+
+  /* Color adjustments for print */
+  .text-pink-500 {
+    color: #000 !important;
+  }
+
+  .bg-gradient-to-br {
+    background: white !important;
+  }
+
+  /* Ensure chart is visible */
+  svg {
+    color: #000 !important;
+  }
+
+  .recharts-text {
+    fill: #000 !important;
+  }
+
+  .recharts-cartesian-axis-tick-value {
+    font-size: 10px !important;
+  }
+
+  /* Notes section */
+  .print-notes {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #d1d5db;
+    min-height: 150px;
+  }
+
+  .print-notes h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #000;
+  }
+
+  .print-notes-lines {
+    border-bottom: 1px solid #e5e7eb;
+    height: 25px;
+    width: 100%;
+  }
+}
