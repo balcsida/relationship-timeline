@@ -31,7 +31,7 @@ describe('App', () => {
   test('loads language from localStorage', () => {
     localStorage.setItem('appLanguage', 'hu');
     const { container } = render(<App />);
-    expect(container.textContent).toContain('Kapcsolat Idővonal');
+    expect(container.textContent).toContain('Kapcsolati idővonal');
   });
 
   test('toggles language between EN and HU', () => {
@@ -39,6 +39,6 @@ describe('App', () => {
     const langButton = [...container.querySelectorAll('button')].find(b => b.textContent.includes('HU'));
     expect(langButton).toBeTruthy();
     fireEvent.click(langButton);
-    expect(container.textContent).toContain('Kapcsolat Idővonal');
+    expect(container.textContent).toContain('Kapcsolati idővonal');
   });
 });
