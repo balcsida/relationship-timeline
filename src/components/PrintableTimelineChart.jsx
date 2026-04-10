@@ -45,7 +45,7 @@ const PrintableTimelineChart = ({ data, lineType, showLabels = false }) => {
           bottom: showLabels ? 60 : 40 
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border, #e5e7eb)" />
         <XAxis 
           dataKey="date" 
           tick={{ fontSize: 11 }}
@@ -102,9 +102,9 @@ const PrintableTimelineChart = ({ data, lineType, showLabels = false }) => {
         <Line 
           type={lineType}
           dataKey="satisfaction" 
-          stroke="#ec4899" 
+          stroke="var(--color-primary, #c084fc)"
           strokeWidth={showLabels ? 2 : 3}
-          dot={{ fill: '#ec4899', strokeWidth: 2, r: showLabels ? 8 : 6 }} 
+          dot={{ fill: 'var(--color-primary, #c084fc)', strokeWidth: 2, r: showLabels ? 8 : 6 }} 
           activeDot={{ r: 8 }}
           name="Satisfaction"
           label={showLabels ? renderCustomLabel : false}
