@@ -11,7 +11,6 @@
     margin: 0.5in;
   }
 
-  /* Hide everything except print content */
   body * {
     visibility: hidden;
   }
@@ -27,26 +26,26 @@
     left: 0;
     top: 0;
     width: 100%;
+    font-family: system-ui, -apple-system, sans-serif;
   }
 
-  /* Hide UI elements during print */
   .no-print {
     display: none !important;
   }
 
-  /* Print header styling */
   .print-header {
     display: block !important;
     visibility: visible !important;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #1e293b;
   }
 
   .print-header h1 {
-    font-size: 24px;
+    font-size: 22px;
     margin-bottom: 10px;
-    color: #000;
+    color: #1e293b;
+    font-weight: 600;
   }
 
   .print-info {
@@ -57,10 +56,9 @@
 
   .print-info-item {
     font-size: 12px;
-    color: #000;
+    color: #1e293b;
   }
 
-  /* Chart container for print */
   .print-chart {
     display: block !important;
     visibility: visible !important;
@@ -69,13 +67,12 @@
     page-break-inside: avoid;
   }
 
-  /* Event labels styling */
   .event-label {
     font-size: 10px;
     background: white;
     padding: 2px 4px;
     border: 1px solid #333;
-    border-radius: 3px;
+    border-radius: 6px;
     max-width: 120px;
     text-align: center;
     line-height: 1.2;
@@ -96,7 +93,6 @@
     background-color: #f9fafb;
   }
 
-  /* Summary section */
   .print-summary {
     margin-top: 30px;
     page-break-before: always;
@@ -111,33 +107,24 @@
   .print-events-table th,
   .print-events-table td {
     padding: 8px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #e2e8f0;
     text-align: left;
   }
 
   .print-events-table th {
-    background-color: #f3f4f6;
-    font-weight: bold;
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #1e293b;
   }
 
   .satisfaction-badge {
     display: inline-block;
     padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-weight: 600;
     font-size: 10px;
   }
 
-  /* Color adjustments for print */
-  .text-pink-500 {
-    color: #000 !important;
-  }
-
-  .bg-gradient-to-br {
-    background: white !important;
-  }
-
-  /* Ensure chart is visible */
   svg {
     color: #000 !important;
   }
@@ -150,22 +137,23 @@
     font-size: 10px !important;
   }
 
-  /* Notes section */
   .print-notes {
     margin-top: 30px;
     padding: 20px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     min-height: 150px;
   }
 
   .print-notes h3 {
     font-size: 14px;
     margin-bottom: 10px;
-    color: #000;
+    color: #1e293b;
+    font-weight: 600;
   }
 
   .print-notes-lines {
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e2e8f0;
     height: 25px;
     width: 100%;
   }
