@@ -1,7 +1,12 @@
-import RelationshipTimeline from './components/RelationshipTimeline'
+import { EventProvider } from '@/context/EventContext';
+import MainLayout from '@/components/MainLayout';
 
 function App() {
-  return <RelationshipTimeline />
+  return (
+    <EventProvider>
+      <MainLayout />
+    </EventProvider>
+  );
 }
 
-export default App
+export default App;
