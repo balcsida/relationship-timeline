@@ -1,7 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import AppHeader from '@/components/AppHeader';
 import SatisfactionChart from '@/components/SatisfactionChart';
-import VerticalTimeline from '@/components/VerticalTimeline';
 import EventTable from '@/components/EventTable';
 import EventFormDialog from '@/components/EventFormDialog';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
@@ -16,7 +15,7 @@ const PrintableTimelineChart = lazy(() => import('./PrintableTimelineChart'));
 export default function MainLayout() {
   const { events, deleteEvent } = useEvents();
   const t = useTranslation();
-  const { registerTimelineRef, registerTableRowRef } = useEventSync();
+  const { registerTableRowRef } = useEventSync();
 
   const [showEventForm, setShowEventForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
@@ -138,14 +137,11 @@ export default function MainLayout() {
         <main className="max-w-7xl mx-auto p-6 space-y-6">
           {events.length > 0 && <SatisfactionChart />}
 
-          <div className="flex gap-6 flex-col md:flex-row">
-            <VerticalTimeline registerTimelineRef={registerTimelineRef} />
-            <EventTable
-              registerTableRowRef={registerTableRowRef}
-              onEditEvent={handleEditEvent}
-              onDeleteEvent={handleDeleteEvent}
-            />
-          </div>
+          <EventTable
+            registerTableRowRef={registerTableRowRef}
+            onEditEvent={handleEditEvent}
+            onDeleteEvent={handleDeleteEvent}
+          />
         </main>
 
         <EventFormDialog open={showEventForm} onOpenChange={setShowEventForm} editingEvent={editingEvent} />
